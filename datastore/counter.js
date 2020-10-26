@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const sprintf = require('sprintf-js').sprintf;
 
+
 var counter = 0;
 
 // Private helper functions ////////////////////////////////////////////////////
@@ -10,6 +11,8 @@ var counter = 0;
 // If you don't know what a zero-padded number is, read the
 // Wikipedia entry on Leading Zeros and check out some of code links:
 // https://www.google.com/search?q=what+is+a+zero+padded+number%3F
+
+
 
 const zeroPaddedNumber = (num) => {
   return sprintf('%05d', num);
@@ -36,11 +39,38 @@ const writeCounter = (count, callback) => {
   });
 };
 
+// const defaultCallback = (err, number) => {
+//   return number;
+// };
+
+
+// counter = readCounter(defaultCallback);
+
 // Public API - Fix this function //////////////////////////////////////////////
 
-exports.getNextUniqueId = () => {
-  counter = counter + 1;
-  return zeroPaddedNumber(counter);
+// exports.getNextUniqueId = (callback) => {
+//   // counter += 1;
+//   // writeCounter(counter, defaultCallback);
+
+// };
+
+exports.getNextUniqueId = (callBack) => {
+  var returnString;
+  // call read counter and set to the counter
+  readCounter((err, count) => {
+    // increase counter by 1
+    count++;
+    // write counter
+    writeCounter(count, (err, counterString) => {
+      // return zero padded counter
+      returnString = counterString;
+      callBack(null, returnString);
+    });
+  });
+
+  return returnString;
+
+
 };
 
 
