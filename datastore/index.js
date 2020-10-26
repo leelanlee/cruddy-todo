@@ -45,12 +45,21 @@ exports.readAll = (callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  var text = items[id];
-  if (!text) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback(null, { id, text });
-  }
+  // var text = items[id];
+  // if (!text) {
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   callback(null, { id, text });
+  // }
+  console.log(id);
+  fs.readFile(exports.dataDir + '/' + id + '.txt', (err, text) => {
+    if (err) {
+      callback(err, '');
+    } else {
+      console.log(text.toString());
+      callback(null, { id, text: text.toString() });
+    }
+  });
 };
 
 exports.update = (id, text, callback) => {
@@ -75,7 +84,6 @@ exports.delete = (id, callback) => {
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
-
 exports.dataDir = path.join(__dirname, 'data');
 
 exports.initialize = () => {
