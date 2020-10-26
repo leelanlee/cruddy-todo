@@ -23,11 +23,25 @@ exports.create = (text, callback) => {
   });
 };
 
+// should return [{id: text}, {id: text}] ex: [{0: 'feed cat'}, {1: 'walk dog'}]
+
 exports.readAll = (callback) => {
-  var data = _.map(items, (text, id) => {
-    return { id, text };
+  // var data = _.map(items, (text, id) => {
+  //   return { id, text };
+  // });
+  // callback(null, data);
+  var data = [];
+  fs.readdir( exports.dataDir, (err, files) => {
+    if (err) {
+      callback(null, data);
+    }
+    files.forEach( (file) => {
+      let id = file.slice(0, 5);
+      let todo = {id: id, text: id};
+      data.push(todo);
+    });
+    callback(null, data);
   });
-  callback(null, data);
 };
 
 exports.readOne = (id, callback) => {
