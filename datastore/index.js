@@ -36,34 +36,16 @@ exports.readAll = (callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  console.log(id);
   fs.readFile(exports.dataDir + '/' + id + '.txt', (err, text) => {
     if (err) {
       callback(err, '');
     } else {
-      console.log(text.toString());
       callback(null, { id, text: text.toString() });
     }
   });
 };
 
 exports.update = (id, text, callback) => {
-  // var item = items[id];
-  // if (!item) {
-  //   callback(new Error(`No item with id: ${id}`));
-  // } else {
-  //   items[id] = text;
-  //   callback(null, { id, text });
-  // }
-
-  // fs.writeFile(exports.dataDir + '/' + id + '.txt', text, (err) => {
-  //   if (err) {
-  //     throw ('Cannot write to file');
-  //   } else {
-  //     callback(null, {id, text});
-  //   }
-  // });
-
   fs.access(exports.dataDir + '/' + id + '.txt', (err) => {
     if (err) {
       callback(err, '');
@@ -80,14 +62,13 @@ exports.update = (id, text, callback) => {
 };
 
 exports.delete = (id, callback) => {
-  var item = items[id];
-  delete items[id];
-  if (!item) {
-    // report an error if item not found
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    callback();
-  }
+  fs.unlink(exports.dataDir + '/' + id + '.txt', (err) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null);
+    }
+  });
 };
 
 // Config+Initialization code -- DO NOT MODIFY /////////////////////////////////
