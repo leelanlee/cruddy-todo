@@ -9,9 +9,6 @@ var items = {};
 
 exports.create = (text, callback) => {
   counter.getNextUniqueId((err, id) => {
-    // if (err || !id) {
-    //   id = 0;
-    // }
     let path = exports.dataDir + '/' + id + '.txt';
     fs.writeFile(path, text, (err) => {
       if (err) {
@@ -23,13 +20,7 @@ exports.create = (text, callback) => {
   });
 };
 
-// should return [{id: text}, {id: text}] ex: [{0: 'feed cat'}, {1: 'walk dog'}]
-
 exports.readAll = (callback) => {
-  // var data = _.map(items, (text, id) => {
-  //   return { id, text };
-  // });
-  // callback(null, data);
   var data = [];
   fs.readdir( exports.dataDir, (err, files) => {
     if (err) {
@@ -45,12 +36,6 @@ exports.readAll = (callback) => {
 };
 
 exports.readOne = (id, callback) => {
-  // var text = items[id];
-  // if (!text) {
-  //   callback(new Error(`No item with id: ${id}`));
-  // } else {
-  //   callback(null, { id, text });
-  // }
   console.log(id);
   fs.readFile(exports.dataDir + '/' + id + '.txt', (err, text) => {
     if (err) {
@@ -63,13 +48,35 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  // var item = items[id];
+  // if (!item) {
+  //   callback(new Error(`No item with id: ${id}`));
+  // } else {
+  //   items[id] = text;
+  //   callback(null, { id, text });
+  // }
+
+  // fs.writeFile(exports.dataDir + '/' + id + '.txt', text, (err) => {
+  //   if (err) {
+  //     throw ('Cannot write to file');
+  //   } else {
+  //     callback(null, {id, text});
+  //   }
+  // });
+
+  fs.access(exports.dataDir + '/' + id + '.txt', (err) => {
+    if (err) {
+      callback(err, '');
+    } else {
+      fs.writeFile(exports.dataDir + '/' + id + '.txt', text, (err) => {
+        if (err) {
+          throw ('Cannot write to file');
+        } else {
+          callback(null, {id, text});
+        }
+      });
+    }
+  });
 };
 
 exports.delete = (id, callback) => {
