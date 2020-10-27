@@ -43,13 +43,9 @@ const writeCounter = (count, callback) => {
 
 exports.getNextUniqueId = (callBack) => {
   var returnString;
-  // call read counter and set to the counter
   readCounter((err, count) => {
-    // increase counter by 1
     count++;
-    // write counter
     writeCounter(count, (err, counterString) => {
-      // return zero padded counter
       returnString = counterString;
       callBack(null, returnString);
     });

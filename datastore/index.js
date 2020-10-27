@@ -21,21 +21,6 @@ exports.create = (text, callback) => {
   });
 };
 
-// exports.readAll = (callback) => {
-//   var data = [];
-//   fs.readdir( exports.dataDir, (err, files) => {
-//     if (err) {
-//       callback(null, data);
-//     }
-//     files.forEach( (file) => {
-//       let id = file.slice(0, 5);
-//       let todo = {id: id, text: id};
-//       data.push(todo);
-//     });
-//     callback(null, data);
-//   });
-// };
-
 exports.readAll = (callback) => {
   fs.readdir( exports.dataDir, (err, files) => {
     if (err) {
